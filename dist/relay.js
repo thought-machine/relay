@@ -506,7 +506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: name,
 	      type: type
 	    });
-	    var root = new RelayQueryRoot(concreteRoot, __webpack_require__(19).get('$RelayQuery'), {});
+	    var root = new RelayQueryRoot(concreteRoot, __webpack_require__(18).get('$RelayQuery'), {});
 	    root.__children__ = nextChildren;
 	    return root;
 	  };
@@ -782,7 +782,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: name,
 	      responseType: responseType
 	    });
-	    var mutation = new RelayQueryMutation(concreteMutation, __webpack_require__(19).get('$RelayQuery'), { input: callValue || '' });
+	    var mutation = new RelayQueryMutation(concreteMutation, __webpack_require__(18).get('$RelayQuery'), { input: callValue || '' });
 	    mutation.__children__ = nextChildren;
 	    return mutation;
 	  };
@@ -875,7 +875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      type: type,
 	      metadata: metadata
 	    });
-	    var fragment = new RelayQueryFragment(concreteFragment, __webpack_require__(19).get('$RelayQuery'), {}, {
+	    var fragment = new RelayQueryFragment(concreteFragment, __webpack_require__(18).get('$RelayQuery'), {}, {
 	      isDeferred: !!(metadata && metadata.isDeferred),
 	      isContainerFragment: !!(metadata && metadata.isContainerFragment)
 	    });
@@ -1044,7 +1044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      metadata: metadata,
 	      type: type
 	    });
-	    var field = new RelayQueryField(concreteField, __webpack_require__(19).get('$RelayQuery'), {});
+	    var field = new RelayQueryField(concreteField, __webpack_require__(18).get('$RelayQuery'), {});
 	    field.__children__ = nextChildren;
 	    return field;
 	  };
@@ -2563,13 +2563,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 18 */
-/***/ function(module, exports) {
-
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2616,6 +2609,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cache = {};
 
 	module.exports = RelayMetaRoute;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
 /* 20 */
@@ -3161,7 +3161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(31)
-	  , core      = __webpack_require__(18)
+	  , core      = __webpack_require__(19)
 	  , ctx       = __webpack_require__(94)
 	  , hide      = __webpack_require__(49)
 	  , PROTOTYPE = 'prototype';
@@ -6144,7 +6144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      switch (config.type) {
 	        case __webpack_require__(23).REQUIRED_CHILDREN:
 	          var newChildren = config.children.map(function (child) {
-	            return __webpack_require__(2).Fragment.create(child, __webpack_require__(19).get('$buildQuery'), {});
+	            return __webpack_require__(2).Fragment.create(child, __webpack_require__(18).get('$buildQuery'), {});
 	          });
 	          children = children.concat(newChildren);
 	          /* eslint-disable no-console */
@@ -7809,7 +7809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var concreteQuery = __webpack_require__(86).Query(queryBuilder, Component, queryName, route.params);
 	      __webpack_require__(1)(concreteQuery !== undefined, 'Relay.QL: query `%s.queries.%s` is invalid, a typical query is ' + 'defined using: () => Relay.QL`query { ... }`.', route.name, queryName);
 	      if (concreteQuery) {
-	        var rootQuery = __webpack_require__(2).Root.create(concreteQuery, __webpack_require__(19).get(route.name), route.params);
+	        var rootQuery = __webpack_require__(2).Root.create(concreteQuery, __webpack_require__(18).get(route.name), route.params);
 	        var identifyingArg = rootQuery.getIdentifyingArg();
 	        if (!identifyingArg || identifyingArg.value !== undefined) {
 	          querySet[queryName] = rootQuery;
@@ -8641,7 +8641,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var global         = __webpack_require__(31)
-	  , core           = __webpack_require__(18)
+	  , core           = __webpack_require__(19)
 	  , LIBRARY        = __webpack_require__(97)
 	  , wksExt         = __webpack_require__(106)
 	  , defineProperty = __webpack_require__(32).f;
@@ -12559,7 +12559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// most Object methods by ES6 should accept primitives
 	var $export = __webpack_require__(30)
-	  , core    = __webpack_require__(18)
+	  , core    = __webpack_require__(19)
 	  , fails   = __webpack_require__(48);
 	module.exports = function(KEY, exec){
 	  var fn  = (core.Object || {})[KEY] || Object[KEY]
@@ -13940,6 +13940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.pending = null;
 	      _this.state = {
 	        queryData: {},
+	        rawVariables: {},
 	        relayProp: {
 	          forceFetch: _this.forceFetch.bind(_this),
 	          getPendingTransactions: _this.getPendingTransactions.bind(_this),
@@ -14034,10 +14035,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    RelayContainer.prototype._runVariables = function _runVariables(partialVariables, callback, forceFetch) {
 	      var _this3 = this;
 
-	      var lastVariables = this.state.relayProp.variables;
-	      var prevVariables = this.pending ? this.pending.variables : lastVariables;
 	      validateVariables(initialVariables, partialVariables);
-	      var nextVariables = mergeVariables(prevVariables, partialVariables);
+	      var lastVariables = this.state.rawVariables;
+	      var prevVariables = this.pending ? this.pending.rawVariables : lastVariables;
+	      var rawVariables = mergeVariables(prevVariables, partialVariables);
+	      var nextVariables = rawVariables;
+	      if (prepareVariables) {
+	        var metaRoute = __webpack_require__(18).get(this.context.route.name);
+	        nextVariables = prepareVariables(rawVariables, metaRoute);
+	        validateVariables(initialVariables, nextVariables);
+	      }
 
 	      this.pending && this.pending.request.abort();
 
@@ -14076,6 +14083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var _queryData = _this3._getQueryData(_this3.props);
 	          partialState = {
 	            queryData: _queryData,
+	            rawVariables: rawVariables,
 	            relayProp: (0, _extends3['default'])({}, _this3.state.relayProp, {
 	              variables: nextVariables
 	            })
@@ -14110,7 +14118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, 'RelayContainer.onReadyStateChange');
 
 	      var current = {
-	        variables: nextVariables,
+	        rawVariables: rawVariables,
 	        request: forceFetch ? this.context.relay.forceFetch(querySet, onReadyStateChange) : this.context.relay.primeCache(querySet, onReadyStateChange)
 	      };
 	      this.pending = current;
@@ -14198,7 +14206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (_this4.context.relay !== relay) {
 	          _this4._cleanup();
 	        }
-	        return _this4._initialize(nextProps, relay, route, resetPropOverridesForVariables(spec, nextProps, state.relayProp.variables));
+	        return _this4._initialize(nextProps, relay, route, resetPropOverridesForVariables(spec, nextProps, state.rawVariables));
 	      });
 	    };
 
@@ -14208,17 +14216,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    RelayContainer.prototype._initialize = function _initialize(props, environment, route, prevVariables) {
-	      var nextVariables = getVariablesWithPropOverrides(spec, props, prevVariables);
+	      var rawVariables = getVariablesWithPropOverrides(spec, props, prevVariables);
+	      var nextVariables = rawVariables;
 	      if (prepareVariables) {
 	        // TODO: Allow routes without names, #7856965.
-	        var metaRoute = __webpack_require__(19).get(route.name);
-	        nextVariables = prepareVariables(nextVariables, metaRoute);
+	        var metaRoute = __webpack_require__(18).get(route.name);
+	        nextVariables = prepareVariables(rawVariables, metaRoute);
 	        validateVariables(initialVariables, nextVariables);
 	      }
 	      this._updateFragmentPointers(props, route, nextVariables);
 	      this._updateFragmentResolvers(environment);
 	      return {
 	        queryData: this._getQueryData(props),
+	        rawVariables: rawVariables,
 	        relayProp: this.state.relayProp.route === route && __webpack_require__(152)(this.state.relayProp.variables, nextVariables) ? this.state.relayProp : (0, _extends3['default'])({}, this.state.relayProp, {
 	          route: route,
 	          variables: nextVariables
@@ -14418,11 +14428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    __webpack_require__(1)(fragmentBuilder, 'RelayContainer: Expected `%s` to have a query fragment named `%s`.', containerName, fragmentName);
 	    var fragment = buildContainerFragment(containerName, fragmentName, fragmentBuilder, initialVariables);
 	    // TODO: Allow routes without names, #7856965.
-	    var metaRoute = __webpack_require__(19).get(route.name);
-	    if (prepareVariables) {
-	      variables = prepareVariables(variables, metaRoute);
-	      validateVariables(initialVariables, variables);
-	    }
+	    var metaRoute = __webpack_require__(18).get(route.name);
 	    return __webpack_require__(2).Fragment.create(fragment, metaRoute, variables);
 	  }
 
@@ -14501,7 +14507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function getDeferredFragment(fragmentReference, context, variables) {
-	  var route = __webpack_require__(19).get(context.route.name);
+	  var route = __webpack_require__(18).get(context.route.name);
 	  var concreteFragment = fragmentReference.getFragment(variables);
 	  var concreteVariables = fragmentReference.getVariables(route, variables);
 	  return __webpack_require__(2).Fragment.create(concreteFragment, route, concreteVariables, {
@@ -15153,7 +15159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      var fragment = __webpack_require__(2).Fragment.create(buildMutationFragment(_this.constructor.name, fragmentName, fragmentBuilder, initialVariables), __webpack_require__(19).get('$RelayMutation_' + _this.constructor.name), initialVariables);
+	      var fragment = __webpack_require__(2).Fragment.create(buildMutationFragment(_this.constructor.name, fragmentName, fragmentBuilder, initialVariables), __webpack_require__(18).get('$RelayMutation_' + _this.constructor.name), initialVariables);
 
 	      if (fragment.isPlural()) {
 	        __webpack_require__(1)(Array.isArray(propValue), 'RelayMutation: Invalid prop `%s` supplied to `%s`, expected an ' + 'array of records because the corresponding fragment is plural.', fragmentName, _this.constructor.name);
@@ -18515,7 +18521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function createRelayQuery(node, variables) {
 	  __webpack_require__(1)(typeof variables === 'object' && variables != null && !Array.isArray(variables), 'Relay.Query: Expected `variables` to be an object.');
-	  return __webpack_require__(2).Root.create(node, __webpack_require__(19).get('$createRelayQuery'), variables);
+	  return __webpack_require__(2).Root.create(node, __webpack_require__(18).get('$createRelayQuery'), variables);
 	}
 
 	module.exports = createRelayQuery;
@@ -19666,7 +19672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function createNode(query, desiredType) {
 	  var variables = {};
-	  var route = __webpack_require__(19).get('$fromGraphQL');
+	  var route = __webpack_require__(18).get('$fromGraphQL');
 	  return desiredType.create(query, route, variables);
 	}
 
@@ -21488,13 +21494,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(147);
 	__webpack_require__(251);
-	module.exports = __webpack_require__(18).Array.from;
+	module.exports = __webpack_require__(19).Array.from;
 
 /***/ },
 /* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var core  = __webpack_require__(18)
+	var core  = __webpack_require__(19)
 	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
 	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
 	  return $JSON.stringify.apply($JSON, arguments);
@@ -21505,14 +21511,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(253);
-	module.exports = __webpack_require__(18).Object.assign;
+	module.exports = __webpack_require__(19).Object.assign;
 
 /***/ },
 /* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(254);
-	var $Object = __webpack_require__(18).Object;
+	var $Object = __webpack_require__(19).Object;
 	module.exports = function create(P, D){
 	  return $Object.create(P, D);
 	};
@@ -21522,7 +21528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(255);
-	var $Object = __webpack_require__(18).Object;
+	var $Object = __webpack_require__(19).Object;
 	module.exports = function defineProperty(it, key, desc){
 	  return $Object.defineProperty(it, key, desc);
 	};
@@ -21532,21 +21538,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(256);
-	module.exports = __webpack_require__(18).Object.freeze;
+	module.exports = __webpack_require__(19).Object.freeze;
 
 /***/ },
 /* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(257);
-	module.exports = __webpack_require__(18).Object.keys;
+	module.exports = __webpack_require__(19).Object.keys;
 
 /***/ },
 /* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(258);
-	module.exports = __webpack_require__(18).Object.setPrototypeOf;
+	module.exports = __webpack_require__(19).Object.setPrototypeOf;
 
 /***/ },
 /* 227 */
@@ -21556,7 +21562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(259);
 	__webpack_require__(261);
 	__webpack_require__(262);
-	module.exports = __webpack_require__(18).Symbol;
+	module.exports = __webpack_require__(19).Symbol;
 
 /***/ },
 /* 228 */
@@ -21945,7 +21951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var classof   = __webpack_require__(232)
 	  , ITERATOR  = __webpack_require__(25)('iterator')
 	  , Iterators = __webpack_require__(60);
-	module.exports = __webpack_require__(18).getIteratorMethod = function(it){
+	module.exports = __webpack_require__(19).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
 	    || Iterators[classof(it)];
